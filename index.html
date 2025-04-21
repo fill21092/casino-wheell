@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Казино Рулетка</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; background: #111; color: white; }
+    canvas { background: #222; margin-top: 50px; border-radius: 50%; }
+    button { padding: 10px 20px; font-size: 20px; margin-top: 30px; cursor: pointer; background: gold; border: none; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🎰 Рулетка Казино 🎰</h1>
+  <canvas id="wheel" width="400" height="400"></canvas>
+  <br>
+  <button onclick="spin()">Крутить!</button>
+  <script>
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const prizes = ["🎁 75 Фриспинов", "💰 500%", "❌ Пусто", "🔁 Повтор", "🎲 1 шанс", "💎 Джекпот"];
+    const colors = ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0", "#9966ff", "#f9a602"];
+    let angle = 0;
+
+    function drawWheel() {
+      const step = 2 * Math.PI / prizes.length;
+      for (let i = 0; i < prizes.length; i++) {
+        ctx.beginPath();
+        ctx.fillStyle = colors[i];
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 200, i * step, (i + 1) * step);
+        ctx.lineTo(200, 200);
+        ctx.fill();
+        ctx.fillStyle = "#000";
+        ctx.font = "16px sans-serif";
+        ctx.fillText(prizes[i], 200 + 100 * Math.cos(i * step + step/2) - 30, 200 + 100 * Math.sin(i * step + step/2));
+      }
+    }
+
+    function spin() {
+      const rotate = 360 * 5 + Math.floor(Math.random() * 360);
+      canvas.style.transition = "transform 5s ease-out";
+      canvas.style.transform = `rotate(${rotate}deg)`;
+      setTimeout(() => {
+        canvas.style.transition = "none";
+        canvas.style.transform = "rotate(0deg)";
+      }, 6000);
+    }
+
+    drawWheel();
+  </script>
+</body>
+</html>
